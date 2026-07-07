@@ -1,0 +1,34 @@
+name: Bandit Security Test
+
+on:
+  push:
+    branches:
+      - main
+      - feature/bandit-test
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Configure Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Security Linter
+        run: pip install bandit
+
+      - name: Run Bandit Scan
+        run: |
+          # Scan everything. Use || true so your pipeline stays green while testing
+          bandit -r . --exclude ./.git,./venv -lll --confidence-level medium || true
