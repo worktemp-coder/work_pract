@@ -1,0 +1,11 @@
+# Ignore local secret text files
+apikey.txt
+
+# Ignore application log traces
+*.log
+
+# Ignore local Python environments
+venv/
+.venv/
+__pycache__/
+*.pyc
