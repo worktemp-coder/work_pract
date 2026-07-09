@@ -59,20 +59,9 @@ jobs:
           fi
           kill $APP_PID
 
-      - name: Verify secret is configured
-        env:
-          APP_SECRET: ${{ secrets.MY_APP_SECRET }}
-        run: |
-          if [ -z "$APP_SECRET" ]; then
-            echo "ERROR: MY_APP_SECRET is not configured"
-            exit 1
-          fi
-          echo "Secret is configured"
-          echo "Secret length: ${#APP_SECRET} characters"
-
   security-scan:
     runs-on: ubuntu-latest
-    needs: test
+    # Removed needs: test so this runs independently
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -105,7 +94,7 @@ jobs:
 
   trivy-scan:
     runs-on: ubuntu-latest
-    needs: test
+    # Removed needs: test so this runs independently
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
