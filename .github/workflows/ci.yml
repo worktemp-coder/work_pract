@@ -104,3 +104,29 @@ jobs:
         with:
           name: bandit-security-report
           path: bandit-report.txt
+
+  trivy-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build image for scanning
+        run: docker build -t flask-app:ci .
+
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@v0.29.0
+        with:
+          image-ref: flask-app:ci
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          ignore-unfixed: true
+
+      - name: Run Trivy config scan
+        uses: aquasecurity/trivy-action@v0.29.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: table
+          exit-code: 0
