@@ -1,2 +1,2 @@
-debug = false
-max_reties =3
+DEBUG = False
+MAX_RETRIES = 3
